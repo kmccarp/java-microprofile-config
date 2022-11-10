@@ -1,7 +1,7 @@
 package it;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.regex.Pattern;
 
@@ -21,15 +21,16 @@ public class EndpointTest {
         Response response = sendRequest(url, "GET");
 		try {
 			int responseCode = response.getStatus();
-			assertEquals("Incorrect response code: " + responseCode, 200,
-					responseCode);
+			assertEquals(200,
+					responseCode,
+					"Incorrect response code: " + responseCode);
 
 			String responseString = response.readEntity(String.class);
 			for (Pattern expectedOutput : expectedOutputs) {
 				assertTrue(
+						expectedOutput.matcher(responseString).matches(),
 						"Incorrect response: pattern=" + expectedOutput
-								+ " response=" + responseString,
-						expectedOutput.matcher(responseString).matches());
+								+ " response=" + responseString);
 			}
 		} finally {
 			response.close();
